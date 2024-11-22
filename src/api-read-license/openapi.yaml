@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: My API
+  description: My API
+  version: dev
+components:
+  schemas:
+    file:
+      type: string
+    fileResponce:
+      type: object
+      properties:
+        item:
+          type: object
+          properties:
+            expiration_date_type:
+              type: string
+            last_name_type:
+              type: string
+            document_number:
+              type: string
+            document_number_type:
+              type: string
+            last_name:
+              type: string
+            document_number_confidence:
+              type: number
+            first_name:
+              type: string
+            first_name_type:
+              type: string
+            input:
+              type: string
+            first_name_confidence:
+              type: number
+            expiration_date:
+              type: string
+            last_name_confidence:
+              type: number
+            expiration_date_confidence:
+              type: number
+        file:
+          type: object
+          properties:
+            identity:
+              type: object
+              properties:
+                FIRST_NAME:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    type:
+                      type: string
+                    confidence:
+                      type: number
+                LAST_NAME:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    type:
+                      type: string
+                    confidence:
+                      type: number
+                DOCUMENT_NUMBER:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    type:
+                      type: string
+                    confidence:
+                      type: number
+                EXPIRATION_DATE:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                    type:
+                      type: string
+                    confidence:
+                      type: number
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message describing the error.
+    DocumentResponse:
+      type: object
+      description: Document object.
+      properties:
+        id:
+          type: integer
+          description: Document unique identifier.
+paths:
+  /patent/{file}:
+    get:
+      summary: /patent/{file}
+      description: Get the patent by the file name if exist
+      operationId: sls-textract-ocr-dev-getDocumentByFileName
+      parameters:
+        - name: file
+          in: path
+          description: file name that was uploaded
+          required: true
+          schema:
+            $ref: '#/components/schemas/file'
+      tags: []
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileResponce'
+        '400':
+          description: Request error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+servers:
+  - url: my-api
+    description: dev
