@@ -11,22 +11,20 @@ export default function ScanError() {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: 'Bearer YOUR_ACCESS_TOKEN' // Sostituisci con il token corretto, se necessario
+					Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg3OWI1M2VhLWUwYWUtNGE5ZC1iOWUxLTgxZjliZTk1YzBlYyIsInJvbGUiOiI3NzBiNTk3My1lYjg5LTQ3ZmQtODAwZC04YTRmMTEyZWRkMGYiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTczMjM2MDgxOCwiZXhwIjoxNzMyNDA0MDE4LCJpc3MiOiJkaXJlY3R1cyJ9.dgw_3mADbwWIiLwk2O6zrq9yS2rssemB7vGI0W2HHus' // Sostituisci con il token corretto, se necessario
 				}
 			})
 
-			if (!response.ok) {
+
+
+			if (response.status != 204) {
 				throw new Error(`Errore: ${response.status} ${response.statusText}`)
 			}
-
-			const data = await response.json()
-			console.log('Richiesta inviata con successo:', data)
 
 			// Eventuale navigazione o feedback per l'utente
 			navigate('/success-page') // Sostituisci con il percorso corretto
 		} catch (error) {
-			console.error('Errore durante la richiesta di assistenza:', error)
-			alert('Errore durante la richiesta di assistenza. Riprovare più tardi.')
+
 		}
 	}
 
