@@ -17,12 +17,15 @@ export default function ScanError() {
 
 
 
+
+
 			if (response.status != 204) {
 				throw new Error(`Errore: ${response.status} ${response.statusText}`)
 			}
-
+			alert("You will be reached soon!")
 			// Eventuale navigazione o feedback per l'utente
-			navigate('/success-page') // Sostituisci con il percorso corretto
+			navigate('/') // Sostituisci con il percorso corretto
+
 		} catch (error) {
 
 		}

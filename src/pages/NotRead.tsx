@@ -7,30 +7,29 @@ export default function NotRead() {
 	const navigate = useNavigate()
 	const [loading, setLoading] = React.useState(false)
 
-	const handleRequestAssistance = async (event: { preventDefault: () => void }) => {
-		event.preventDefault()
-		setLoading(true)
-
+	const handleRequestAssistance = async () => {
 		try {
 			const response = await fetch('https://rvthn2.revod.services/flows/trigger/c6612cca-f1d5-480c-896f-e453b3f35837', {
 				method: 'GET',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg3OWI1M2VhLWUwYWUtNGE5ZC1iOWUxLTgxZjliZTk1YzBlYyIsInJvbGUiOiI3NzBiNTk3My1lYjg5LTQ3ZmQtODAwZC04YTRmMTEyZWRkMGYiLCJhcHBfYWNjZXNzIjp0cnVlLCJhZG1pbl9hY2Nlc3MiOnRydWUsImlhdCI6MTczMjM2MDgxOCwiZXhwIjoxNzMyNDA0MDE4LCJpc3MiOiJkaXJlY3R1cyJ9.dgw_3mADbwWIiLwk2O6zrq9yS2rssemB7vGI0W2HHus' // Sostituisci con il token corretto, se necessario
 				}
 			})
 
-			if (!response.ok) {
+
+
+
+
+			if (response.status != 204) {
 				throw new Error(`Errore: ${response.status} ${response.statusText}`)
 			}
+			alert("You will be reached soon!")
+			// Eventuale navigazione o feedback per l'utente
+			navigate('/') // Sostituisci con il percorso corretto
 
-			const data = await response.json()
-			console.log('Richiesta inviata con successo:', data)
-			navigate('/success-page')
 		} catch (error) {
-			console.error('Errore durante la richiesta di assistenza:', error)
-			alert('Errore durante la richiesta di assistenza. Riprovare più tardi.')
-		} finally {
-			setLoading(false)
+
 		}
 	}
 
@@ -64,7 +63,6 @@ export default function NotRead() {
 				</Button>
 			</Grid2>
 			<Grid2>
-				//TODO: add the link to assistenza
 				<Link href="#" underline="hover" onClick={handleRequestAssistance}>
 					<Typography variant="h5" style={{ marginTop: 20, padding: 20 }}>
 						Richiedi Assistenza
