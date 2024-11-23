@@ -6,8 +6,8 @@ import {slsTextractOcrDevGetDocumentByFileName} from "../../api-read-license/cli
 
 AWS.config.update({
 	credentials: {
-		accessKeyId: 'AKIASOF4WL5ZS5NXXDNP',
-		secretAccessKey: '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',
+		accessKeyId: 'accessKeyId',
+		secretAccessKey: 'secretAccessKey',
 	},
 })
 
