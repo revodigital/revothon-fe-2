@@ -1,5 +1,4 @@
-import { Box, Button } from '@mui/material'
-import { Grid2, Typography } from '@mui/material'
+import { Box, Button , Grid2, Typography } from '@mui/material'
 import Webcam from 'react-webcam'
 import React, { useState } from 'react'
 import AWS from 'aws-sdk'
@@ -113,7 +112,31 @@ const LicensePlateReader = () => {
 						})
 					)
 				} else {
-					// qui l'autista non esiste, devi creare sia autista che poi log
+					const newDriver = await directusClient.request(
+						createItem('Drivers', {
+							"driverName": res.data.first_name,
+							"driverSurname": res.data.last_name,
+							"isBlacklist": false,
+							"documentNumber": res.data.document_number
+						})
+					)
+
+					const new_driver = await directusClient.request(
+						readItems('Drivers', {
+							filter: {
+								documentNumber: {
+									_eq: res?.data.document_number
+								}
+							}
+						})
+					)
+
+					const newLog = await directusClient.request(
+						createItem('Log', {
+							status: 'draft',
+							driver: new_driver[0].driverId
+						})
+					)
 				}
 				console.log(res)
 			} else {

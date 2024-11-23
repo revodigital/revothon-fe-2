@@ -5,6 +5,31 @@ import { useNavigate } from 'react-router-dom'
 export default function ScanError() {
 	const navigate = useNavigate()
 
+	const handleRequestAssistance = async () => {
+		try {
+			const response = await fetch('https://rvthn2.revod.services/flows/trigger/c6612cca-f1d5-480c-896f-e453b3f35837', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Sostituisci con il token corretto, se necessario
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(`Errore: ${response.status} ${response.statusText}`);
+			}
+
+			const data = await response.json();
+			console.log('Richiesta inviata con successo:', data);
+
+			// Eventuale navigazione o feedback per l'utente
+			navigate('/success-page'); // Sostituisci con il percorso corretto
+		} catch (error) {
+			console.error('Errore durante la richiesta di assistenza:', error);
+			alert('Errore durante la richiesta di assistenza. Riprovare più tardi.');
+		}
+	};
+
 	return (
 		<Grid2
 			container
@@ -30,7 +55,7 @@ export default function ScanError() {
 
 			{/* Button */}
 			<Grid2>
-				<Button variant="contained" color="primary" onClick={() => navigate('/')} style={{ marginTop: 20, padding: 20 }}>
+				<Button variant="contained" color="primary" onClick={handleRequestAssistance} style={{ marginTop: 20, padding: 20 }}>
 					Richeiedi Assistenza
 				</Button>
 			</Grid2>
