@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import AWS from 'aws-sdk'
 import { slsTextractOcrDevGetDocumentByFileName } from '../../api-read-license/client'
 import { directusClient } from 'App'
-import { i } from 'vite/dist/node/types.d-aGj9QkWt'
 import { createItem, readItems } from '@directus/sdk'
 import { useNavigate } from 'react-router-dom'
+import { Shield, FlashOn } from '@mui/icons-material' // Icone supereroi
 
 AWS.config.update({
 	credentials: {
@@ -23,7 +23,7 @@ const buk = new AWS.S3({
 const LicensePlateReader = () => {
 	const [loading, setLoading] = useState(false)
 	const jonny = React.useRef<any>(null)
-	console.log(setLoading)
+
 	function urlFile(dataurl: any, filename: string) {
 		var arr = dataurl.split(','),
 			mime = arr[0].match(/:(.*?);/)[1],
@@ -37,7 +37,6 @@ const LicensePlateReader = () => {
 	}
 
 	const capture = React.useCallback(async () => {
-		console.log('start test')
 		const varA = jonny.current?.getScreenshot()
 		if (varA) {
 			const date = new Date().getTime()
@@ -67,7 +66,7 @@ const LicensePlateReader = () => {
 			let ocrResponse = await slsTextractOcrDevGetDocumentByFileName({ path: { file: key } })
 			if (!ocrResponse.data?.input) {
 				if (attempt < maxRetries) {
-					await new Promise((resolve) => setTimeout(resolve, 1000 * attempt)) // Attende prima di riprovare, aumentando l'attesa ogni tentativo
+					await new Promise((resolve) => setTimeout(resolve, 1000 * attempt))
 					return getFileWithRetry(key, maxRetries, attempt + 1)
 				} else {
 					return undefined
@@ -77,7 +76,7 @@ const LicensePlateReader = () => {
 			}
 		} catch (e: any) {
 			if (attempt < maxRetries) {
-				await new Promise((resolve) => setTimeout(resolve, 1000 * attempt)) // Attende prima di riprovare, aumentando l'attesa ogni tentativo
+				await new Promise((resolve) => setTimeout(resolve, 1000 * attempt))
 				return getFileWithRetry(key, maxRetries, attempt + 1.5)
 			} else {
 				return undefined
@@ -94,7 +93,6 @@ const LicensePlateReader = () => {
 			const sn = test?.name.split('.')
 			const res = await getFileWithRetry(sn[0])
 			if (res) {
-				/* Chiamata api */
 				const driver = await directusClient.request(
 					readItems('Drivers', {
 						filter: {
@@ -106,8 +104,6 @@ const LicensePlateReader = () => {
 				)
 
 				if (driver.length > 0) {
-					// qui l'autista esiste già, devi solo creare il log
-					console.log(driver)
 					const newLog = await directusClient.request(
 						createItem('Log', {
 							status: 'draft',
@@ -140,21 +136,18 @@ const LicensePlateReader = () => {
 					localStorage.setItem('log', JSON.stringify(newLog))
 					navigate('/scan-executed', { state: { driver: newDriver[0], log: newLog } })
 				}
-				console.log(res)
 			} else {
-				/* Errore */
 				console.log('Patente non valida o errore nella scansione.')
-				navigate('/Read') // Reindirizza alla pagina NotRead
+				navigate('/Read')
 			}
 		} else {
 			setTimeout(() => {
-				console.log('Scansione completata!')
-				setLoading(false) // Nasconde il loader alla fine
-			}, 3000) // Ritardo simulato di 3 secondi
+				setLoading(false)
+			}, 3000)
 		}
 		setLoading(false)
 	}
-	console.log('-------------')
+
 	return (
 		<Grid2
 			container
@@ -165,11 +158,20 @@ const LicensePlateReader = () => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				textAlign: 'center',
-				padding: 2
+				padding: 2,
+				backgroundColor: '#20232a', // Tema scuro
+				color: '#f39c12', // Testo arancione
+				fontFamily: 'Comic Sans MS, cursive, sans-serif' // Stile cartoonesco
 			}}>
 			<Grid2>
-				<Typography variant="h1" mt={4}>
-					Scansiona la Patente
+				<Typography
+					variant="h1"
+					sx={{
+						fontSize: '3rem',
+						fontWeight: 'bold',
+						textShadow: '2px 2px 8px rgba(255, 255, 255, 0.7)'
+					}}>
+					Scansiona la Patente, Supereroe!
 				</Typography>
 			</Grid2>
 			<Box
@@ -177,8 +179,7 @@ const LicensePlateReader = () => {
 					aspectRatio: '4 / 3',
 					overflow: 'hidden',
 					borderRadius: '8px',
-					border: '2px solid #000',
-					display: loading ? 'none' : 'block'
+					border: '3px solid #f39c12'
 				}}>
 				<Webcam
 					audio={false}
@@ -190,13 +191,29 @@ const LicensePlateReader = () => {
 					}}
 				/>
 			</Box>
-
-			{/* Loader durante il caricamento */}
-			{loading && <CircularProgress color="primary" />}
-
-			{/* Bottone per avviare la scansione */}
-			<Button onClick={handleClick} variant="contained" color="primary" disabled={loading}>
-				{loading ? 'Scansione in corso...' : 'Scansiona la patente'}
+			{loading && (
+				<CircularProgress
+					color="secondary"
+					sx={{
+						marginTop: 3
+					}}
+				/>
+			)}
+			<Button
+				onClick={handleClick}
+				variant="contained"
+				color="primary"
+				startIcon={<Shield />}
+				disabled={loading}
+				sx={{
+					backgroundColor: '#8e44ad', // Viola brillante
+					color: '#fff',
+					fontWeight: 'bold',
+					fontSize: '1.2rem',
+					padding: '10px 30px',
+					marginTop: 4
+				}}>
+				{loading ? 'Scansione in corso...' : 'Scansiona ora!'}
 			</Button>
 		</Grid2>
 	)
