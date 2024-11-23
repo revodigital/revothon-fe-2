@@ -1,4 +1,4 @@
-import { Box, Button , Grid2, Typography } from '@mui/material'
+import { Box, Button, Grid2, Typography } from '@mui/material'
 import Webcam from 'react-webcam'
 import React, { useState } from 'react'
 import AWS from 'aws-sdk'
@@ -6,6 +6,7 @@ import { slsTextractOcrDevGetDocumentByFileName } from '../../api-read-license/c
 import { directusClient } from 'App'
 import { i } from 'vite/dist/node/types.d-aGj9QkWt'
 import { createItem, readItems } from '@directus/sdk'
+import { useNavigate } from 'react-router-dom'
 
 AWS.config.update({
 	credentials: {
@@ -83,6 +84,9 @@ const LicensePlateReader = () => {
 			}
 		}
 	}
+
+	const navigate = useNavigate()
+
 	const handleClick = async () => {
 		setLoading(true)
 		let test = await capture()
@@ -111,13 +115,18 @@ const LicensePlateReader = () => {
 							driver: driver[0].driverId
 						})
 					)
+
+					localStorage.setItem('driver', JSON.stringify(driver[0]))
+					localStorage.setItem('log', JSON.stringify(newLog))
+
+					navigate('/scan-executed', { state: { driver: driver[0], log: newLog } })
 				} else {
 					const newDriver = await directusClient.request(
 						createItem('Drivers', {
-							"driverName": res.data.first_name,
-							"driverSurname": res.data.last_name,
-							"isBlacklist": false,
-							"documentNumber": res.data.document_number
+							driverName: res.data.first_name,
+							driverSurname: res.data.last_name,
+							isBlacklist: false,
+							documentNumber: res.data.document_number
 						})
 					)
 
@@ -137,6 +146,10 @@ const LicensePlateReader = () => {
 							driver: new_driver[0].driverId
 						})
 					)
+
+					localStorage.setItem('driver', JSON.stringify(new_driver))
+					localStorage.setItem('log', JSON.stringify(newLog))
+					navigate('/scan-executed', { state: { driver: new_driver[0], log: newLog } })
 				}
 				console.log(res)
 			} else {
