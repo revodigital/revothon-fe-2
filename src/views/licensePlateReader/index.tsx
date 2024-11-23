@@ -143,6 +143,8 @@ const LicensePlateReader = () => {
 				console.log(res)
 			} else {
 				/* Errore */
+				console.log('Patente non valida o errore nella scansione.')
+				navigate('/Read') // Reindirizza alla pagina NotRead
 			}
 		} else {
 			setTimeout(() => {
