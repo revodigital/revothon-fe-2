@@ -130,20 +130,10 @@ const LicensePlateReader = () => {
 						})
 					)
 
-					const new_driver = await directusClient.request(
-						readItems('Drivers', {
-							filter: {
-								documentNumber: {
-									_eq: res?.data.document_number
-								}
-							}
-						})
-					)
-
 					const newLog = await directusClient.request(
 						createItem('Log', {
 							status: 'draft',
-							driver: new_driver[0].driverId
+							driver: newDriver[0].driverId
 						})
 					)
 
