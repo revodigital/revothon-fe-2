@@ -1,19 +1,20 @@
-import {Box, Button} from '@mui/material'
+import { Box, Button } from '@mui/material'
+import { Grid2, Typography } from '@mui/material'
 import Webcam from 'react-webcam'
 import React, { useState } from 'react'
 import AWS from 'aws-sdk'
-import {slsTextractOcrDevGetDocumentByFileName} from "../../api-read-license/client";
+import { slsTextractOcrDevGetDocumentByFileName } from '../../api-read-license/client'
 
 AWS.config.update({
 	credentials: {
-		accessKeyId: 'accessKeyId',
-		secretAccessKey: 'secretAccessKey',
-	},
+		accessKeyId: 'AKIASOF4WL5ZYOZA7JJY',
+		secretAccessKey: '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'
+	}
 })
 
 const buk = new AWS.S3({
 	params: { Bucket: 'ocr-documents-revo-eni' },
-	region: 'eu-west-1',
+	region: 'eu-west-1'
 })
 
 const LicensePlateReader = () => {
@@ -42,7 +43,7 @@ const LicensePlateReader = () => {
 				const params = {
 					Body: varB,
 					Bucket: 'ocr-documents-revo-eni',
-					Key: 'input/' + varB.name,
+					Key: 'input/' + varB.name
 				}
 				buk.putObject(params).send((err, data) => {
 					if (err) console.log(err)
@@ -60,7 +61,7 @@ const LicensePlateReader = () => {
 	const getFileWithRetry = async (key: any, maxRetries = 5, attempt = 1): Promise<any | undefined> => {
 		try {
 			if (attempt === 1) await new Promise((resolve) => setTimeout(resolve, 4))
-			let ocrResponse = await slsTextractOcrDevGetDocumentByFileName({path: {file: key}})
+			let ocrResponse = await slsTextractOcrDevGetDocumentByFileName({ path: { file: key } })
 			if (!ocrResponse.data?.input) {
 				if (attempt < maxRetries) {
 					await new Promise((resolve) => setTimeout(resolve, 1000 * attempt)) // Attende prima di riprovare, aumentando l'attesa ogni tentativo
@@ -86,16 +87,48 @@ const LicensePlateReader = () => {
 		if (test) {
 			const sn = test?.name.split('.')
 			const res = await getFileWithRetry(sn[0])
-			if (res) {/* Chiamata api */} else {/* Errore */}
-		} else {}
+			if (res) {
+				/* Chiamata api */
+			} else {
+				/* Errore */
+			}
+		} else {
+		}
 		setLoading(false)
 	}
 	console.log('-------------')
 	return (
-		<Box sx={{ textAlign: 'center' }}>
-			<Webcam audio={false} height={720} ref={jonny} screenshotFormat="image/jpeg" width={720} />
-			<Button onClick={handleClick}>Scansiona la patente</Button>
-		</Box>
+		<Grid2
+			container
+			direction="column"
+			spacing={8}
+			sx={{
+				minHeight: '100vh',
+				alignItems: 'center',
+				justifyContent: 'center',
+				textAlign: 'center',
+				padding: 2
+			}}>
+			<Grid2>
+				<Typography variant="h1" mt={4}>
+					Scansiona la Patente
+				</Typography>
+			</Grid2>
+			<Box>
+				<Webcam
+					audio={false}
+					ref={jonny}
+					screenshotFormat="image/jpeg"
+					style={{
+						width: '100%',
+						height: '100%'
+					}}
+				/>
+				<Button onClick={handleClick} variant="contained" color="primary">
+					Scansiona la patente
+				</Button>
+			</Box>
+		</Grid2>
 	)
 }
 
