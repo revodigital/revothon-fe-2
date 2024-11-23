@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 export default function ScanExecuted() {
+	const navigate = useNavigate()
+
 	return (
 		<Grid2
 			container
