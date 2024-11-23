@@ -1,4 +1,4 @@
-import { Box, Button, Grid2, Typography } from '@mui/material'
+import { Box, Button, Grid2, Typography, CircularProgress } from '@mui/material'
 import Webcam from 'react-webcam'
 import React, { useState } from 'react'
 import AWS from 'aws-sdk'
@@ -105,7 +105,6 @@ const LicensePlateReader = () => {
 					})
 				)
 
-				// TODO: occhio che dopo che crei il log in entrambi i casi te lo devi salvare in localStorage come id
 				if (driver.length > 0) {
 					// qui l'autista esiste già, devi solo creare il log
 					console.log(driver)
@@ -156,6 +155,10 @@ const LicensePlateReader = () => {
 				/* Errore */
 			}
 		} else {
+			setTimeout(() => {
+				console.log('Scansione completata!')
+				setLoading(false) // Nasconde il loader alla fine
+			}, 3000) // Ritardo simulato di 3 secondi
 		}
 		setLoading(false)
 	}
@@ -182,7 +185,8 @@ const LicensePlateReader = () => {
 					aspectRatio: '4 / 3',
 					overflow: 'hidden',
 					borderRadius: '8px',
-					border: '2px solid #000'
+					border: '2px solid #000',
+					display: loading ? 'none' : 'block'
 				}}>
 				<Webcam
 					audio={false}
@@ -194,8 +198,13 @@ const LicensePlateReader = () => {
 					}}
 				/>
 			</Box>
-			<Button onClick={handleClick} variant="contained" color="primary">
-				Scansiona la patente
+
+			{/* Loader durante il caricamento */}
+			{loading && <CircularProgress color="primary" />}
+
+			{/* Bottone per avviare la scansione */}
+			<Button onClick={handleClick} variant="contained" color="primary" disabled={loading}>
+				{loading ? 'Scansione in corso...' : 'Scansiona la patente'}
 			</Button>
 		</Grid2>
 	)
