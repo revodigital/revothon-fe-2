@@ -101,7 +101,7 @@ const LicensePlateReader = () => {
 				)
 
 				// TODO: occhio che dopo che crei il log in entrambi i casi te lo devi salvare in localStorage come id
-				if (driver[0]) {
+				if (driver.length > 0) {
 					// qui l'autista esiste già, devi solo creare il log
 				} else {
 					// qui l'autista non esiste, devi creare sia autista che poi log
