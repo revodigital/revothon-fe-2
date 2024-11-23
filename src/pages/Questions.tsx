@@ -4,8 +4,10 @@ import Radio from '@mui/material/Radio'
 import { directusClient } from 'App'
 import { readItems } from '@directus/sdk'
 import { log } from 'console'
-
+import { useNavigate } from 'react-router-dom'
 export default function Questions() {
+	const navigate = useNavigate()
+
 	const [currentStep, setCurrentStep] = useState(1) // Current question index
 	const [selectedValue, setSelectedValue] = useState('')
 	const [questions, setQuestions] = useState<any[]>([]) // State to store fetched questions
@@ -26,12 +28,10 @@ export default function Questions() {
 		setTimeout(fetchQuestions, 1000)
 	}, [])
 
-	// Handle answer change
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSelectedValue((event.target as HTMLInputElement).value)
 	}
 
-	// Handle next question
 	const handleNext = () => {
 		const currentQuestion = questions[currentStep - 1]
 
@@ -47,8 +47,10 @@ export default function Questions() {
 				setCurrentStep(currentStep + 1)
 				setSelectedValue('')
 			} else {
-				alert('Questions completed!')
+				navigate('/Complete')
 			}
+		} else {
+			alert('Incorrect. Please try again.')
 		}
 	}
 
@@ -65,7 +67,7 @@ export default function Questions() {
 			alignItems="center"
 			justifyContent="center"
 			spacing={2}
-			style={{ height: '50vh', textAlign: 'center' }}>
+			style={{ height: '80vh', textAlign: 'center' }}>
 			{/* Step Counter */}
 			<Grid2>
 				<Typography variant="h4">
@@ -76,7 +78,7 @@ export default function Questions() {
 			{/* Question */}
 			<Grid2>
 				<FormControl>
-					<FormLabel>{currentQuestion.question}</FormLabel>
+					<FormLabel style={{ fontSize: '50px', padding: '10px', color: 'black' }}>{currentQuestion.question}</FormLabel>
 					<RadioGroup value={selectedValue} onChange={handleChange}>
 						<FormControlLabel value={1} control={<Radio />} label={currentQuestion.answer1} />
 						<FormControlLabel value={2} control={<Radio />} label={currentQuestion.answer2} />
@@ -87,7 +89,7 @@ export default function Questions() {
 
 			{/* Next Button */}
 			<Grid2>
-				<Button variant="contained" color="primary" onClick={handleNext} disabled={!selectedValue}>
+				<Button variant="contained" color="primary" style={{ marginTop: '30px' }} onClick={handleNext} disabled={!selectedValue}>
 					Next
 				</Button>
 			</Grid2>
