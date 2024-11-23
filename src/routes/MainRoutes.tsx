@@ -8,16 +8,25 @@ import { lazy } from 'react'
 import Loadable from 'ui-components/common/Loadable'
 import Homepage from 'pages/Homepage'
 import License from 'views/licensePlateReader/index'
+import ScanError from 'pages/style/ScanError'
 
 const LazyComponent = Loadable(lazy(() => import('../views/licensePlateReader')))
 
 const MainRoutes = {
 	path: '/',
-	element: <Homepage />,
+	element: <MinimalLayout />,
 	children: [
 		{
 			path: '/path/di/test',
 			element: <LazyComponent />
+		},
+		{
+			path: '/Error',
+			element: <ScanError />
+		},
+		{
+			path: '/',
+			element: <Homepage />
 		},
 		{
 			path: '/license',
