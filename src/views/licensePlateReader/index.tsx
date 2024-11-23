@@ -6,7 +6,7 @@ import AWS from 'aws-sdk'
 import { slsTextractOcrDevGetDocumentByFileName } from '../../api-read-license/client'
 import { directusClient } from 'App'
 import { i } from 'vite/dist/node/types.d-aGj9QkWt'
-import { readItems } from '@directus/sdk'
+import { createItem, readItems } from '@directus/sdk'
 
 AWS.config.update({
 	credentials: {
@@ -95,7 +95,9 @@ const LicensePlateReader = () => {
 				const driver = await directusClient.request(
 					readItems('Drivers', {
 						filter: {
-							_eq: res?.data.document_number
+							documentNumber: {
+								_eq: res?.data.document_number
+							}
 						}
 					})
 				)
@@ -103,6 +105,13 @@ const LicensePlateReader = () => {
 				// TODO: occhio che dopo che crei il log in entrambi i casi te lo devi salvare in localStorage come id
 				if (driver.length > 0) {
 					// qui l'autista esiste già, devi solo creare il log
+					console.log(driver)
+					const newLog = await directusClient.request(
+						createItem('Log', {
+							status: 'draft',
+							driver: driver[0].driverId
+						})
+					)
 				} else {
 					// qui l'autista non esiste, devi creare sia autista che poi log
 				}

@@ -13,11 +13,15 @@ const LazyComponent = Loadable(lazy(() => import('../views/licensePlateReader'))
 
 const MainRoutes = {
 	path: '/',
-	element: <Homepage />,
+	element: <MinimalLayout />,
 	children: [
 		{
 			path: '/path/di/test',
 			element: <LazyComponent />
+		},
+		{
+			path: '/',
+			element: <Homepage />
 		},
 		{
 			path: '/license',
