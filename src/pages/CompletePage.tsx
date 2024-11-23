@@ -21,20 +21,14 @@ export default function Complete() {
 
 			{/* Attention Text */}
 			<Grid2>
-				<Typography variant="h1" color="error">
+				<Typography variant="h1" color="success">
 					Complimenti!
 				</Typography>
 			</Grid2>
 			<Grid2>
-				<Typography variant="h5">L' Autista non puo' acceoere al sito.</Typography>
+				<Typography variant="h5">Hai completato correttamente la procedura</Typography>
 			</Grid2>
 
-			{/* Button */}
-			<Grid2>
-				<Button variant="contained" color="primary" onClick={() => navigate('/')} style={{ marginTop: 20, padding: 20 }}>
-					Richeiedi Assistenza
-				</Button>
-			</Grid2>
 			<Grid2>
 				<Link href="/" underline="hover">
 					<Typography variant="h5" style={{ marginTop: 20, padding: 20 }}>
