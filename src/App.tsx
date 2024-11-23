@@ -17,6 +17,7 @@ export const directusClient = authProvider.getDirectusInstance()
 // ==============================|| APP ||============================== //
 
 const App = () => {
+	const navigate = useNavigate()
 	useMemo(() => {
 		directusClient.login('admin@rvthn2.it', 'password')
 	}, [])
