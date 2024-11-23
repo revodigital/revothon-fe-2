@@ -136,9 +136,9 @@ const LicensePlateReader = () => {
 						})
 					)
 
-					localStorage.setItem('driver', JSON.stringify(new_driver))
+					localStorage.setItem('driver', JSON.stringify(newDriver))
 					localStorage.setItem('log', JSON.stringify(newLog))
-					navigate('/scan-executed', { state: { driver: new_driver[0], log: newLog } })
+					navigate('/scan-executed', { state: { driver: newDriver[0], log: newLog } })
 				}
 				console.log(res)
 			} else {
