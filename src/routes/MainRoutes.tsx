@@ -21,6 +21,14 @@ const MainRoutes = {
 			element: <LazyComponent />
 		},
 		{
+			path: '/Error',
+			element: <ScanError />
+		},
+		{
+			path: '/',
+			element: <Homepage />
+		},
+		{
 			path: '/license',
 			element: <License />
 		}
