@@ -1,7 +1,10 @@
 import { Grid2 } from '@mui/material'
 import { Typography, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 export default function Homepage() {
+	const navigate = useNavigate()
+
 	return (
 		<Grid2
 			container
@@ -34,7 +37,7 @@ export default function Homepage() {
 				</Grid2>
 			</Grid2>
 			<Grid2>
-				<Button variant="contained" color="primary">
+				<Button variant="contained" color="primary" onClick={() => navigate('/license')}>
 					Avanti
 				</Button>
 			</Grid2>

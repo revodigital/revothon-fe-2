@@ -4,6 +4,9 @@ import Webcam from 'react-webcam'
 import React, { useState } from 'react'
 import AWS from 'aws-sdk'
 import { slsTextractOcrDevGetDocumentByFileName } from '../../api-read-license/client'
+import { directusClient } from 'App'
+import { i } from 'vite/dist/node/types.d-aGj9QkWt'
+import { readItems } from '@directus/sdk'
 
 AWS.config.update({
 	credentials: {
@@ -89,6 +92,21 @@ const LicensePlateReader = () => {
 			const res = await getFileWithRetry(sn[0])
 			if (res) {
 				/* Chiamata api */
+				const driver = await directusClient.request(
+					readItems('Drivers', {
+						filter: {
+							_eq: res?.data.document_number
+						}
+					})
+				)
+
+				// TODO: occhio che dopo che crei il log in entrambi i casi te lo devi salvare in localStorage come id
+				if (driver[0]) {
+					// qui l'autista esiste già, devi solo creare il log
+				} else {
+					// qui l'autista non esiste, devi creare sia autista che poi log
+				}
+				console.log(res)
 			} else {
 				/* Errore */
 			}
@@ -114,7 +132,13 @@ const LicensePlateReader = () => {
 					Scansiona la Patente
 				</Typography>
 			</Grid2>
-			<Box>
+			<Box
+				style={{
+					aspectRatio: '4 / 3',
+					overflow: 'hidden',
+					borderRadius: '8px',
+					border: '2px solid #000'
+				}}>
 				<Webcam
 					audio={false}
 					ref={jonny}
@@ -124,10 +148,10 @@ const LicensePlateReader = () => {
 						height: '100%'
 					}}
 				/>
-				<Button onClick={handleClick} variant="contained" color="primary">
-					Scansiona la patente
-				</Button>
 			</Box>
+			<Button onClick={handleClick} variant="contained" color="primary">
+				Scansiona la patente
+			</Button>
 		</Grid2>
 	)
 }

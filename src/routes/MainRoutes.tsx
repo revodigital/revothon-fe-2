@@ -12,7 +12,7 @@ import License from 'views/licensePlateReader/index'
 const LazyComponent = Loadable(lazy(() => import('../views/licensePlateReader')))
 
 const MainRoutes = {
-	path: '/path',
+	path: '/',
 	element: <MinimalLayout />,
 	children: [
 		{
@@ -20,11 +20,11 @@ const MainRoutes = {
 			element: <LazyComponent />
 		},
 		{
-			path: '/path/homepage',
+			path: '/homepage',
 			element: <Homepage />
 		},
 		{
-			path: '/path/license',
+			path: '/license',
 			element: <License />
 		}
 	]
