@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Grid2, Typography, Button, FormControl, FormLabel, RadioGroup, FormControlLabel } from '@mui/material'
+import { Grid2, Typography, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, CircularProgress } from '@mui/material'
 import Radio from '@mui/material/Radio'
 import { directusClient } from 'App'
-import { readItems } from '@directus/sdk'
+import { readItems, updateItem } from '@directus/sdk'
 import { log } from 'console'
 import { useNavigate } from 'react-router-dom'
+
 export default function Questions() {
 	const navigate = useNavigate()
 
@@ -32,7 +33,7 @@ export default function Questions() {
 		setSelectedValue((event.target as HTMLInputElement).value)
 	}
 
-	const handleNext = () => {
+	const handleNext = async () => {
 		const currentQuestion = questions[currentStep - 1]
 
 		console.log(currentQuestion.correctAnswer)
@@ -48,6 +49,19 @@ export default function Questions() {
 				setSelectedValue('')
 			} else {
 				navigate('/Complete')
+				const log = JSON.parse(localStorage.getItem('log') || '{}')
+				if (!log) alert('cannot retrieve any log')
+				try {
+					// Update the log table for the driver status to 'draft'
+					const updateLog = await directusClient.request(
+						updateItem('Log', log.id, {
+							status: 'completed'
+						})
+					)
+					console.log('Log updated successfully:', updateLog)
+				} catch (error) {
+					console.error('Error updating log:', error)
+				}
 			}
 		} else {
 			alert('Incorrect. Please try again.')
