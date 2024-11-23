@@ -49,6 +49,10 @@ const MainRoutes = {
 			element: <ScanExecuted />
 		},
 		{
+			path: '/scan-error',
+			element: <ScanError />
+		},
+		{
 			path: '/license',
 			element: <License />
 		}

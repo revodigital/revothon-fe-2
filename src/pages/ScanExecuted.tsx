@@ -21,6 +21,14 @@ export default function ScanExecuted() {
 		}
 	}, [])
 
+	const handleNavigate = () => {
+		if (licenseData?.isBlacklist) {
+			navigate('/scan-error')
+		} else {
+			navigate('/Questions')
+		}
+	}
+
 	return (
 		<Grid2
 			container
@@ -58,13 +66,10 @@ export default function ScanExecuted() {
 			)}
 
 			{/* Button */}
-
 			<Grid2>
-				<Link href="/" underline="hover">
-					<Button variant="contained" color="primary" onClick={() => navigate('/license')}>
-						Avanti
-					</Button>
-				</Link>
+				<Button variant="contained" color="primary" onClick={handleNavigate}>
+					Avanti
+				</Button>
 			</Grid2>
 		</Grid2>
 	)

@@ -11,24 +11,24 @@ export default function ScanError() {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Sostituisci con il token corretto, se necessario
-				},
-			});
+					Authorization: 'Bearer YOUR_ACCESS_TOKEN' // Sostituisci con il token corretto, se necessario
+				}
+			})
 
 			if (!response.ok) {
-				throw new Error(`Errore: ${response.status} ${response.statusText}`);
+				throw new Error(`Errore: ${response.status} ${response.statusText}`)
 			}
 
-			const data = await response.json();
-			console.log('Richiesta inviata con successo:', data);
+			const data = await response.json()
+			console.log('Richiesta inviata con successo:', data)
 
 			// Eventuale navigazione o feedback per l'utente
-			navigate('/success-page'); // Sostituisci con il percorso corretto
+			navigate('/success-page') // Sostituisci con il percorso corretto
 		} catch (error) {
-			console.error('Errore durante la richiesta di assistenza:', error);
-			alert('Errore durante la richiesta di assistenza. Riprovare più tardi.');
+			console.error('Errore durante la richiesta di assistenza:', error)
+			alert('Errore durante la richiesta di assistenza. Riprovare più tardi.')
 		}
-	};
+	}
 
 	return (
 		<Grid2
@@ -50,13 +50,13 @@ export default function ScanError() {
 				</Typography>
 			</Grid2>
 			<Grid2>
-				<Typography variant="h5">L' Autista non puo' acceoere al sito.</Typography>
+				<Typography variant="h5">L' Autista non puo' accedere al sito.</Typography>
 			</Grid2>
 
 			{/* Button */}
 			<Grid2>
 				<Button variant="contained" color="primary" onClick={handleRequestAssistance} style={{ marginTop: 20, padding: 20 }}>
-					Richeiedi Assistenza
+					Richiedi Assistenza
 				</Button>
 			</Grid2>
 			<Grid2>
