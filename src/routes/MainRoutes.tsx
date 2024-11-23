@@ -12,7 +12,7 @@ import ScanError from 'pages/ScanError'
 import Complete from 'pages/CompletePage'
 import ScanExecuted from 'pages/ScanExecuted'
 import NotRead from 'pages/NotRead'
-// import Questions from 'pages/Questions'
+import Questions from 'pages/Questions'
 
 const LazyComponent = Loadable(lazy(() => import('../views/licensePlateReader')))
 
@@ -40,10 +40,10 @@ const MainRoutes = {
 			path: '/Read',
 			element: <NotRead />
 		},
-		// {
-		// 	path: '/Questions',
-		// 	element: <Questions />
-		// },
+		{
+			path: '/Questions',
+			element: <Questions />
+		},
 		{
 			path: '/scan-executed',
 			element: <ScanExecuted />
